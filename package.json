@@ -2,7 +2,7 @@
   "name": "com.kaynir.pools",
   "version": "1.0.0",
   "displayName": "Pool System",
-  "description": "Пакет создания игровых объектов при помощи пула.",
+  "description": "Пакет создания игровых объектов через пул.",
   "unity": "2021.3",
   "keywords": [
     "pooling, pool"
