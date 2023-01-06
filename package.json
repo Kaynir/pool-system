@@ -1,0 +1,15 @@
+{
+  "name": "com.kaynir.pools",
+  "version": "1.0.0",
+  "displayName": "Pool System",
+  "description": "Пакет создания игровых объектов при помощи пула.",
+  "unity": "2021.3",
+  "keywords": [
+    "pooling, pool"
+  ],
+  "author": {
+    "name": "Денис Знов",
+    "email": "kaynir.games@gmail.com",
+    "url": "https://github.com/Kaynir/pool-system"
+  }
+}
