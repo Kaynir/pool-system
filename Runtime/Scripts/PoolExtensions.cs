@@ -9,6 +9,7 @@ namespace Kaynir.Pools
             if (gameObject.TryGetComponent(out PoolableObject poolable))
             {
                 poolable.Release();
+                return;
             }
 
             Object.Destroy(gameObject);
