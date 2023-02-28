@@ -6,24 +6,13 @@ namespace Kaynir.Pools
     {
         public static void Release(this GameObject gameObject)
         {
-            if (gameObject.TryGetComponent(out PoolableObject poolable))
+            if (gameObject.TryGetComponent(out IPoolable poolable))
             {
                 poolable.Release();
                 return;
             }
 
             Object.Destroy(gameObject);
-        }
-
-        public static void Release(this GameObject gameObject, float delayInSeconds)
-        {
-            if (gameObject.TryGetComponent(out PoolableObject poolable))
-            {
-                poolable.Release(delayInSeconds);
-                return;
-            }
-
-            Object.Destroy(gameObject, delayInSeconds);
         }
     }
 }
