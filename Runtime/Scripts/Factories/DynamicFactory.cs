@@ -5,9 +5,7 @@ namespace Kaynir.Pools
 {
     public class DynamicFactory<T> : AbstractFactory<T> where T : Component
     {
-        [SerializeField] private List<T> _prefabs = new List<T>();
-
-        public int PrefabsCount => _prefabs.Count;
+        [SerializeField] private List<T> _startPrefabs = new List<T>();
 
         private Dictionary<T, IObjectPool<T>> _pools;
 
@@ -17,15 +15,10 @@ namespace Kaynir.Pools
             return _pools[prefab].Take();
         }
 
-        public T TakeObject(int prefabIndex)
-        {
-            return TakeObject(_prefabs[prefabIndex]);
-        }
-
         protected override void Init()
         {
             _pools = new Dictionary<T, IObjectPool<T>>();
-            _prefabs.ForEach(prefab =>
+            _startPrefabs.ForEach(prefab =>
             {
                 CheckForObjectPool(prefab);
             });
