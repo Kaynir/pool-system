@@ -46,6 +46,7 @@ namespace Kaynir.Pools
             _pools[prefab] = CreateObjectPool(prefab, startSize);
         }
 
+        [System.Serializable]
         private struct PoolData
         {
             public T prefab;
