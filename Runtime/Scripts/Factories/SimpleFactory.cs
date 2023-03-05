@@ -2,9 +2,10 @@ using UnityEngine;
 
 namespace Kaynir.Pools
 {
-    public class SimpleFactory<T> : AbstractFactory<T> where T : Component
+    public class SimpleFactory<T> : FactoryBehaviour<T> where T : Component
     {
         [SerializeField] private T _prefab = null;
+        [SerializeField, Min(0)] private int _startSize = 0;
 
         private IObjectPool<T> _pool;
 
@@ -13,9 +14,14 @@ namespace Kaynir.Pools
             return _pool.Take();
         }
 
-        protected override void Init()
+        public override void Init()
         {
-            _pool = CreateObjectPool(_prefab);
+            _pool = CreateObjectPool(_prefab, _startSize);
+        }
+
+        public override void Clear()
+        {
+            _pool.Clear();
         }
     }
 }

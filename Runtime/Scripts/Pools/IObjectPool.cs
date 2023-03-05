@@ -4,5 +4,6 @@ namespace Kaynir.Pools
     {
         T Take();
         void Release(T obj);
+        void Clear();
     }
 }

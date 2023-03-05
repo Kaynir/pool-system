@@ -11,18 +11,20 @@ namespace Kaynir.Pools
         private T _prefab;
         private PoolAction _onTaken;
         private PoolAction _onReleased;
+        private PoolAction _onDestroyed;
 
-        public ObjectPool(T prefab, PoolAction onTaken, PoolAction onReleased, int startCount)
+        public ObjectPool(T prefab, PoolAction onTaken, PoolAction onReleased, PoolAction onDestroyed, int startCount)
         {
             _stack = new Stack<T>();
             _prefab = prefab;
             _onTaken = onTaken;
             _onReleased = onReleased;
+            _onDestroyed = onDestroyed;
 
             Expand(startCount);
         }
 
-        public ObjectPool(T prefab, int startCount) : this(prefab, null, null, startCount) { }
+        public ObjectPool(T prefab, int startCount) : this(prefab, null, null, null, startCount) { }
 
         public void Release(T obj)
         {
@@ -39,6 +41,18 @@ namespace Kaynir.Pools
 
             _onTaken?.Invoke(obj);
             return obj;
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < _stack.Count; i++)
+            {
+                T obj = _stack.Pop();
+                
+                _onDestroyed?.Invoke(obj);
+
+                Object.Destroy(obj.gameObject);
+            }
         }
 
         private T CreateObject()

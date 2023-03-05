@@ -3,32 +3,53 @@ using UnityEngine;
 
 namespace Kaynir.Pools
 {
-    public class DynamicFactory<T> : AbstractFactory<T> where T : Component
+    public class DynamicFactory<T> : FactoryBehaviour<T> where T : Component
     {
-        [SerializeField] private List<T> _startPrefabs = new List<T>();
+        [SerializeField] private List<PoolData> _startPoolDataList = new List<PoolData>();
 
         private Dictionary<T, IObjectPool<T>> _pools;
 
         public T TakeObject(T prefab)
         {
-            CheckForObjectPool(prefab);
+            CheckForObjectPool(prefab, 1);
             return _pools[prefab].Take();
         }
 
-        protected override void Init()
+        public T TakeObject(int prefabIndex)
+        {
+            return TakeObject(_startPoolDataList[prefabIndex].prefab);
+        }
+
+        public override void Init()
         {
             _pools = new Dictionary<T, IObjectPool<T>>();
-            _startPrefabs.ForEach(prefab =>
+            _startPoolDataList.ForEach(poolData =>
             {
-                CheckForObjectPool(prefab);
+                CheckForObjectPool(poolData.prefab, poolData.startSize);
             });
         }
 
-        private void CheckForObjectPool(T prefab)
+        public override void Clear()
+        {
+            foreach (var pool in _pools)
+            {
+                pool.Value.Clear();
+            }
+
+            _pools.Clear();
+        }
+
+        private void CheckForObjectPool(T prefab, int startSize)
         {
             if (_pools.ContainsKey(prefab)) return;
 
-            _pools[prefab] = CreateObjectPool(prefab);
+            _pools[prefab] = CreateObjectPool(prefab, startSize);
+        }
+
+        private struct PoolData
+        {
+            public T prefab;
+            [Min(0)] public int startSize;
         }
     }
 }

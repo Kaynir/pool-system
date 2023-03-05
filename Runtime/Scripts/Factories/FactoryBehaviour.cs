@@ -2,21 +2,20 @@ using UnityEngine;
 
 namespace Kaynir.Pools
 {
-    public abstract class AbstractFactory<T> : MonoBehaviour where T : Component
+    public abstract class FactoryBehaviour<T> : MonoBehaviour where T : Component
     {
         [SerializeField] private Transform _objectParent = null;
-        [SerializeField, Min(1)] private int _startPoolSize = 0;
 
-        private void Awake() => Init();
+        public abstract void Init();
+        public abstract void Clear();
 
-        protected abstract void Init();
-
-        protected virtual IObjectPool<T> CreateObjectPool(T prefab)
+        protected IObjectPool<T> CreateObjectPool(T prefab, int startSize)
         {
             return new ObjectPool<T>(prefab,
                                      OnObjectTaken,
                                      OnObjectReleased,
-                                     _startPoolSize);
+                                     OnObjectDestroyed,
+                                     startSize);
         }
 
         protected virtual void OnObjectTaken(T obj)
@@ -30,5 +29,7 @@ namespace Kaynir.Pools
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(_objectParent);
         }
+
+        protected virtual void OnObjectDestroyed(T obj) { }
     }
 }
