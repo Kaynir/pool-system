@@ -34,11 +34,9 @@ namespace Kaynir.Pools
 
         public T Take()
         {
-            if (!_stack.TryPop(out T obj))
-            {
-                obj = CreateObject();
-            }
-
+            if (_stack.Count == 0) Expand(1);
+            T obj = _stack.Pop();
+            
             _onTaken?.Invoke(obj);
             return obj;
         }
@@ -48,7 +46,7 @@ namespace Kaynir.Pools
             for (int i = 0; i < _stack.Count; i++)
             {
                 T obj = _stack.Pop();
-                
+
                 _onDestroyed?.Invoke(obj);
 
                 Object.Destroy(obj.gameObject);
@@ -58,7 +56,7 @@ namespace Kaynir.Pools
         private T CreateObject()
         {
             T obj = Object.Instantiate(_prefab);
-            
+
             if (!obj.TryGetComponent(out IPoolable poolable))
             {
                 poolable = obj.gameObject.AddComponent<PoolableObject>();

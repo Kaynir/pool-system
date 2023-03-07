@@ -1,4 +1,4 @@
 namespace Kaynir.Pools
 {
-    public class ParticleFactory : DynamicFactory<PoolableParticle> { }
+    public class ParticleFactory : SimpleFactory<PoolableParticle> { }
 }
