@@ -11,8 +11,7 @@ namespace Kaynir.Pools
 
         public T TakeObject(T prefab)
         {
-            if (_pools == null) Init();
-            
+            Init();
             CheckForObjectPool(prefab, 1);
             return _pools[prefab].Take();
         }
@@ -24,6 +23,8 @@ namespace Kaynir.Pools
 
         public override void Init()
         {
+            if (_pools != null) return;
+
             _pools = new Dictionary<T, IObjectPool<T>>();
             _startPoolDataList.ForEach(poolData =>
             {

@@ -11,13 +11,14 @@ namespace Kaynir.Pools
 
         public T TakeObject()
         {
-            if (_pool == null) Init();
-            
+            Init();
             return _pool.Take();
         }
 
         public override void Init()
         {
+            if (_pool != null) return;
+            
             _pool = CreateObjectPool(_prefab, _startSize);
         }
 
