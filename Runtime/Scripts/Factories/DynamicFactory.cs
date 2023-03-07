@@ -11,6 +11,8 @@ namespace Kaynir.Pools
 
         public T TakeObject(T prefab)
         {
+            if (_pools == null) Init();
+            
             CheckForObjectPool(prefab, 1);
             return _pools[prefab].Take();
         }

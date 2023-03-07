@@ -11,6 +11,8 @@ namespace Kaynir.Pools
 
         public T TakeObject()
         {
+            if (_pool == null) Init();
+            
             return _pool.Take();
         }
 
